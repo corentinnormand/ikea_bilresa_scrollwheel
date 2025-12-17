@@ -2,67 +2,184 @@ blueprint:
   name: "IKEA Bilresa Scroll Wheel – Simple Brightness Control"
   description: "Control a light's brightness using the IKEA Bilresa scroll wheel. Scroll to adjust brightness, press to toggle on/off."
   domain: automation
-
   input:
-    scroll_right_entity:
-      name: "Scroll Right Entity"
-      description: "The event entity for scroll right actions"
-      selector:
-        entity:
-          domain: event
+    mode_1:
+      name: "Mode 1"
+      input:
+        scroll_right_entity:
+          name: "Scroll Right Entity"
+          description: "The event entity for scroll right actions"
+          selector:
+            entity:
+              domain: event
 
-    scroll_left_entity:
-      name: "Scroll Left Entity"
-      description: "The event entity for scroll left actions"
-      selector:
-        entity:
-          domain: event
+        scroll_left_entity:
+          name: "Scroll Left Entity"
+          description: "The event entity for scroll left actions"
+          selector:
+            entity:
+              domain: event
 
-    button_press_entity:
-      name: "Button Press Entity"
-      description: "The event entity for button press actions"
-      selector:
-        entity:
-          domain: event
+        button_press_entity:
+          name: "Button Press Entity"
+          description: "The event entity for button press actions"
+          selector:
+            entity:
+              domain: event
 
-    target_light:
-      name: "Target Light"
-      description: "The light to control"
-      selector:
-        entity:
-          domain: light
+        target_light:
+          name: "Target Light"
+          description: "The light to control"
+          selector:
+            entity:
+              domain: light
 
-    increase_brightness_step:
-      name: "Brightness Increase Step"
-      description: "How much to increase brightness per scroll (percentage)"
-      default: 10
-      selector:
-        number:
-          min: 1
-          max: 50
-          unit_of_measurement: "%"
+        increase_brightness_step:
+          name: "Brightness Increase Step"
+          description: "How much to increase brightness per scroll (percentage)"
+          default: 10
+          selector:
+            number:
+              min: 1
+              max: 50
+              unit_of_measurement: "%"
 
-    decrease_brightness_step:
-      name: "Brightness Decrease Step"
-      description: "How much to decrease brightness per scroll (percentage)"
-      default: 10
-      selector:
-        number:
-          min: 1
-          max: 50
-          unit_of_measurement: "%"
+        decrease_brightness_step:
+          name: "Brightness Decrease Step"
+          description: "How much to decrease brightness per scroll (percentage)"
+          default: 10
+          selector:
+            number:
+              min: 1
+              max: 50
+              unit_of_measurement: "%"
 
-    scroll_right_action:
-      name: "Scroll Right Action"
-      description: "What happens when scrolling right"
-      default: "increase"
-      selector:
-        select:
-          options:
-            - label: "Increase Brightness"
-              value: "increase"
-            - label: "Decrease Brightness"
-              value: "decrease"
+        scroll_right_action:
+          name: "Scroll Right Action"
+          description: "What happens when scrolling right"
+          default: "increase"
+          selector:
+            select:
+              options:
+                - label: "Increase Brightness"
+                  value: "increase"
+                - label: "Decrease Brightness"
+                  value: "decrease"
+
+        automation_mode:
+          name: "Automation Mode"
+          description: "How to handle multiple triggers"
+          default: "queued"
+          selector:
+            select:
+              options:
+                - label: "Queued (recommended for smooth scrolling)"
+                  value: "queued"
+                - label: "Single (ignore new triggers while running)"
+                  value: "single"
+                - label: "Restart (restart on new trigger)"
+                  value: "restart"
+                - label: "Parallel (run multiple instances)"
+                  value: "parallel"
+
+        max_queue:
+          name: "Maximum Queue Size"
+          description: "Maximum number of queued scroll actions (only applies in queued mode)"
+          default: 20
+          selector:
+            number:
+              min: 1
+              max: 100
+              unit_of_measurement: "actions"
+
+    mode_2:
+      name: "Mode 2 - Temperature Control"
+      input:
+        scroll_right_entity:
+          name: "Scroll Right Entity"
+          description: "The event entity for scroll right actions"
+          selector:
+            entity:
+              domain: event
+
+        scroll_left_entity:
+          name: "Scroll Left Entity"
+          description: "The event entity for scroll left actions"
+          selector:
+            entity:
+              domain: event
+
+        button_press_entity:
+          name: "Button Press Entity"
+          description: "The event entity for button press actions"
+          selector:
+            entity:
+              domain: event
+
+        target_light:
+          name: "Target Light"
+          description: "The light to control (must support color temperature)"
+          selector:
+            entity:
+              domain: light
+
+        increase_temperature_step:
+          name: "Temperature Increase Step"
+          description: "How much to increase color temperature per scroll (mireds)"
+          default: 30
+          selector:
+            number:
+              min: 5
+              max: 100
+              unit_of_measurement: "mireds"
+
+        decrease_temperature_step:
+          name: "Temperature Decrease Step"
+          description: "How much to decrease color temperature per scroll (mireds)"
+          default: 30
+          selector:
+            number:
+              min: 5
+              max: 100
+              unit_of_measurement: "mireds"
+
+        scroll_right_action:
+          name: "Scroll Right Action"
+          description: "What happens when scrolling right"
+          default: "warmer"
+          selector:
+            select:
+              options:
+                - label: "Warmer (increase mireds)"
+                  value: "warmer"
+                - label: "Cooler (decrease mireds)"
+                  value: "cooler"
+
+        automation_mode:
+          name: "Automation Mode"
+          description: "How to handle multiple triggers"
+          default: "queued"
+          selector:
+            select:
+              options:
+                - label: "Queued (recommended for smooth scrolling)"
+                  value: "queued"
+                - label: "Single (ignore new triggers while running)"
+                  value: "single"
+                - label: "Restart (restart on new trigger)"
+                  value: "restart"
+                - label: "Parallel (run multiple instances)"
+                  value: "parallel"
+
+        max_queue:
+          name: "Maximum Queue Size"
+          description: "Maximum number of queued scroll actions (only applies in queued mode)"
+          default: 20
+          selector:
+            number:
+              min: 1
+              max: 100
+              unit_of_measurement: "actions"
 
 trigger:
   - platform: state
@@ -124,5 +241,5 @@ action:
                   {{ increase_step }}
                 {% endif %}
 
-mode: queued
-max: 20
+mode: !input automation_mode
+max: !input max_queue
