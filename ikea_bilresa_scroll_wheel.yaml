@@ -1,6 +1,6 @@
 blueprint:
-  name: "IKEA Bilresa Scroll Wheel – Brightness Control"
-  description: "Control light brightness using the IKEA Bilresa scroll wheel with configurable step size and behavior"
+  name: "IKEA Bilresa Scroll Wheel – 3 Modes Control"
+  description: "Control up to 3 different lights or functions using the 3 modes of the IKEA Bilresa scroll wheel. Each mode has scroll right, scroll left, and button press."
   domain: automation
 
   input:
@@ -11,16 +11,27 @@ blueprint:
         entity:
           domain: event
 
-    target_light:
-      name: "Target Light"
-      description: "The light entity to control"
+    # ════════════════════════════════════════════════════════════
+    # MODE 1
+    # ════════════════════════════════════════════════════════════
+    mode1_enabled:
+      name: "Mode 1 – Enable"
+      description: "Enable Mode 1 controls"
+      default: true
+      selector:
+        boolean:
+
+    mode1_target_light:
+      name: "Mode 1 – Target Light"
+      description: "Light to control in Mode 1"
+      default: ""
       selector:
         entity:
           domain: light
 
-    control_mode:
-      name: "Control Mode"
-      description: "What to control with the scroll wheel"
+    mode1_control_type:
+      name: "Mode 1 – Control Type"
+      description: "What to control with scroll wheel in Mode 1"
       selector:
         select:
           options:
@@ -30,84 +41,215 @@ blueprint:
               value: "color_temp"
       default: "brightness"
 
-    scroll_direction:
-      name: "Scroll Direction"
-      description: "Choose which direction increases brightness/warmth"
+    mode1_scroll_direction:
+      name: "Mode 1 – Scroll Direction"
+      description: "Which direction increases brightness/warmth"
       selector:
         select:
           options:
-            - label: "Right increases brightness/makes warmer"
+            - label: "Right increases"
               value: "right_up"
-            - label: "Left increases brightness/makes warmer"
+            - label: "Left increases"
               value: "left_up"
       default: "right_up"
 
-    brightness_step:
-      name: "Brightness Step Size (%)"
-      description: "How much to change brightness per scroll step"
+    mode1_step_size:
+      name: "Mode 1 – Step Size"
+      description: "Step size for brightness (%) or color temp (mireds)"
       default: 5
       selector:
         number:
           min: 1
-          max: 25
-          unit_of_measurement: "%"
+          max: 50
 
-    startup_brightness:
-      name: "Startup Brightness (%)"
-      description: "Brightness level when turning on the light with scroll"
-      default: 20
+    mode1_button_action:
+      name: "Mode 1 – Button Press Action"
+      description: "What happens when you press the center button"
+      selector:
+        select:
+          options:
+            - label: "Toggle light on/off"
+              value: "toggle"
+            - label: "Turn on"
+              value: "turn_on"
+            - label: "Turn off"
+              value: "turn_off"
+            - label: "Set to 25% brightness"
+              value: "brightness_25"
+            - label: "Set to 50% brightness"
+              value: "brightness_50"
+            - label: "Set to 75% brightness"
+              value: "brightness_75"
+            - label: "Set to 100% brightness"
+              value: "brightness_100"
+      default: "toggle"
+
+    # ════════════════════════════════════════════════════════════
+    # MODE 2
+    # ════════════════════════════════════════════════════════════
+    mode2_enabled:
+      name: "Mode 2 – Enable"
+      description: "Enable Mode 2 controls"
+      default: false
+      selector:
+        boolean:
+
+    mode2_target_light:
+      name: "Mode 2 – Target Light"
+      description: "Light to control in Mode 2"
+      default: ""
+      selector:
+        entity:
+          domain: light
+
+    mode2_control_type:
+      name: "Mode 2 – Control Type"
+      description: "What to control with scroll wheel in Mode 2"
+      selector:
+        select:
+          options:
+            - label: "Brightness"
+              value: "brightness"
+            - label: "Color Temperature"
+              value: "color_temp"
+      default: "brightness"
+
+    mode2_scroll_direction:
+      name: "Mode 2 – Scroll Direction"
+      description: "Which direction increases brightness/warmth"
+      selector:
+        select:
+          options:
+            - label: "Right increases"
+              value: "right_up"
+            - label: "Left increases"
+              value: "left_up"
+      default: "right_up"
+
+    mode2_step_size:
+      name: "Mode 2 – Step Size"
+      description: "Step size for brightness (%) or color temp (mireds)"
+      default: 5
       selector:
         number:
-          min: 5
+          min: 1
           max: 50
-          unit_of_measurement: "%"
 
-    color_temp_step:
-      name: "Color Temperature Step Size (mireds)"
-      description: "How much to change color temperature per scroll step (only in color temp mode)"
+    mode2_button_action:
+      name: "Mode 2 – Button Press Action"
+      description: "What happens when you press the center button"
+      selector:
+        select:
+          options:
+            - label: "Toggle light on/off"
+              value: "toggle"
+            - label: "Turn on"
+              value: "turn_on"
+            - label: "Turn off"
+              value: "turn_off"
+            - label: "Set to 25% brightness"
+              value: "brightness_25"
+            - label: "Set to 50% brightness"
+              value: "brightness_50"
+            - label: "Set to 75% brightness"
+              value: "brightness_75"
+            - label: "Set to 100% brightness"
+              value: "brightness_100"
+      default: "toggle"
+
+    # ════════════════════════════════════════════════════════════
+    # MODE 3
+    # ════════════════════════════════════════════════════════════
+    mode3_enabled:
+      name: "Mode 3 – Enable"
+      description: "Enable Mode 3 controls"
+      default: false
+      selector:
+        boolean:
+
+    mode3_target_light:
+      name: "Mode 3 – Target Light"
+      description: "Light to control in Mode 3"
+      default: ""
+      selector:
+        entity:
+          domain: light
+
+    mode3_control_type:
+      name: "Mode 3 – Control Type"
+      description: "What to control with scroll wheel in Mode 3"
+      selector:
+        select:
+          options:
+            - label: "Brightness"
+              value: "brightness"
+            - label: "Color Temperature"
+              value: "color_temp"
+      default: "color_temp"
+
+    mode3_scroll_direction:
+      name: "Mode 3 – Scroll Direction"
+      description: "Which direction increases brightness/warmth"
+      selector:
+        select:
+          options:
+            - label: "Right increases"
+              value: "right_up"
+            - label: "Left increases"
+              value: "left_up"
+      default: "right_up"
+
+    mode3_step_size:
+      name: "Mode 3 – Step Size"
+      description: "Step size for brightness (%) or color temp (mireds)"
       default: 25
       selector:
         number:
-          min: 5
-          max: 100
-          unit_of_measurement: "mireds"
+          min: 1
+          max: 50
 
-    min_color_temp:
-      name: "Minimum Color Temperature (mireds)"
-      description: "Warmest color temperature (lower = warmer/more yellow). Typical range: 153-500"
+    mode3_button_action:
+      name: "Mode 3 – Button Press Action"
+      description: "What happens when you press the center button"
+      selector:
+        select:
+          options:
+            - label: "Toggle light on/off"
+              value: "toggle"
+            - label: "Turn on"
+              value: "turn_on"
+            - label: "Turn off"
+              value: "turn_off"
+            - label: "Set to 25% brightness"
+              value: "brightness_25"
+            - label: "Set to 50% brightness"
+              value: "brightness_50"
+            - label: "Set to 75% brightness"
+              value: "brightness_75"
+            - label: "Set to 100% brightness"
+              value: "brightness_100"
+      default: "toggle"
+
+    # ════════════════════════════════════════════════════════════
+    # SHARED SETTINGS
+    # ════════════════════════════════════════════════════════════
+    color_temp_min:
+      name: "Color Temperature – Minimum (mireds)"
+      description: "Warmest color temperature (lower = warmer/yellow)"
       default: 153
       selector:
         number:
           min: 153
           max: 500
-          unit_of_measurement: "mireds"
 
-    max_color_temp:
-      name: "Maximum Color Temperature (mireds)"
-      description: "Coolest color temperature (higher = cooler/more blue). Typical range: 153-500"
+    color_temp_max:
+      name: "Color Temperature – Maximum (mireds)"
+      description: "Coolest color temperature (higher = cooler/blue)"
       default: 500
       selector:
         number:
           min: 153
           max: 500
-          unit_of_measurement: "mireds"
-
-    enable_turn_off:
-      name: "Enable Turn Off on Extreme Scroll"
-      description: "Turn off light when scrolling down past minimum brightness"
-      default: false
-      selector:
-        boolean:
-
-    min_brightness:
-      name: "Minimum Brightness (%)"
-      description: "Minimum brightness level (light turns off if below this when 'Enable Turn Off' is active)"
-      default: 5
-      selector:
-        number:
-          min: 1
-          max: 20
-          unit_of_measurement: "%"
 
 trigger:
   - platform: state
@@ -115,137 +257,219 @@ trigger:
 
 action:
   - variables:
-      target_entity: !input target_light
-      mode: !input control_mode
-      scroll_dir: !input scroll_direction
-      bright_step: !input brightness_step
-      startup_bright: !input startup_brightness
-      temp_step: !input color_temp_step
-      min_temp: !input min_color_temp
-      max_temp: !input max_color_temp
-      turn_off_enabled: !input enable_turn_off
-      min_bright: !input min_brightness
-
-      # Get event type
+      # Get event details
       event_type: "{{ state_attr(trigger.entity_id, 'event_type') }}"
 
-      # Calculate press count for multi-step scrolling
-      press_count: "{{ trigger.to_state.attributes.totalNumberOfPressesCounted | int(1) }}"
+      # Determine which mode (1, 2, or 3) based on event type
+      # Assuming event types like: mode1_rotate_right, mode2_rotate_left, mode3_button_press, etc.
+      current_mode: >-
+        {% if 'mode_1' in event_type or event_type in ['rotate_right', 'rotate_left', 'short_release'] %}
+          1
+        {% elif 'mode_2' in event_type %}
+          2
+        {% elif 'mode_3' in event_type %}
+          3
+        {% else %}
+          1
+        {% endif %}
 
-      # Determine scroll direction (1 for up, -1 for down)
-      is_scroll_right: "{{ event_type == 'rotate_right' }}"
+      # Get action type (scroll_right, scroll_left, or button)
+      is_scroll_right: "{{ 'rotate_right' in event_type }}"
+      is_scroll_left: "{{ 'rotate_left' in event_type }}"
+      is_button: "{{ 'press' in event_type or 'release' in event_type }}"
+
+      # Load mode-specific settings
+      mode1_on: !input mode1_enabled
+      mode1_light: !input mode1_target_light
+      mode1_type: !input mode1_control_type
+      mode1_dir: !input mode1_scroll_direction
+      mode1_step: !input mode1_step_size
+      mode1_btn: !input mode1_button_action
+
+      mode2_on: !input mode2_enabled
+      mode2_light: !input mode2_target_light
+      mode2_type: !input mode2_control_type
+      mode2_dir: !input mode2_scroll_direction
+      mode2_step: !input mode2_step_size
+      mode2_btn: !input mode2_button_action
+
+      mode3_on: !input mode3_enabled
+      mode3_light: !input mode3_target_light
+      mode3_type: !input mode3_control_type
+      mode3_dir: !input mode3_scroll_direction
+      mode3_step: !input mode3_step_size
+      mode3_btn: !input mode3_button_action
+
+      temp_min: !input color_temp_min
+      temp_max: !input color_temp_max
+
+      # Select active mode settings
+      active_light: >-
+        {% if current_mode == 1 %}
+          {{ mode1_light }}
+        {% elif current_mode == 2 %}
+          {{ mode2_light }}
+        {% else %}
+          {{ mode3_light }}
+        {% endif %}
+
+      active_type: >-
+        {% if current_mode == 1 %}
+          {{ mode1_type }}
+        {% elif current_mode == 2 %}
+          {{ mode2_type }}
+        {% else %}
+          {{ mode3_type }}
+        {% endif %}
+
+      active_dir: >-
+        {% if current_mode == 1 %}
+          {{ mode1_dir }}
+        {% elif current_mode == 2 %}
+          {{ mode2_dir }}
+        {% else %}
+          {{ mode3_dir }}
+        {% endif %}
+
+      active_step: >-
+        {% if current_mode == 1 %}
+          {{ mode1_step }}
+        {% elif current_mode == 2 %}
+          {{ mode2_step }}
+        {% else %}
+          {{ mode3_step }}
+        {% endif %}
+
+      active_button: >-
+        {% if current_mode == 1 %}
+          {{ mode1_btn }}
+        {% elif current_mode == 2 %}
+          {{ mode2_btn }}
+        {% else %}
+          {{ mode3_btn }}
+        {% endif %}
+
+      # Calculate direction (1 for increase, -1 for decrease)
       direction: >-
-        {% if scroll_dir == 'right_up' %}
-          {{ 1 if is_scroll_right else -1 }}
+        {% if is_scroll_right %}
+          {{ 1 if active_dir == 'right_up' else -1 }}
         {% else %}
-          {{ -1 if is_scroll_right else 1 }}
+          {{ -1 if active_dir == 'right_up' else 1 }}
         {% endif %}
 
-      # Check current light state
-      light_is_on: "{{ states(target_entity) == 'on' }}"
-
-      # BRIGHTNESS MODE variables
-      brightness_change: "{{ (bright_step | int * press_count | int * direction | int) }}"
-      current_brightness_pct: "{{ (((state_attr(target_entity, 'brightness') | int(0)) / 255.0) * 100) | round(0) }}"
-      new_brightness: >-
-        {% set new_val = (current_brightness_pct | int) + (brightness_change | int) %}
-        {% if new_val < min_bright | int %}
-          {{ min_bright | int }}
-        {% elif new_val > 100 %}
-          100
+      # Check if mode is enabled and light is configured
+      mode_active: >-
+        {% if current_mode == 1 %}
+          {{ mode1_on and mode1_light != '' }}
+        {% elif current_mode == 2 %}
+          {{ mode2_on and mode2_light != '' }}
         {% else %}
-          {{ new_val }}
+          {{ mode3_on and mode3_light != '' }}
         {% endif %}
-      should_turn_off: "{{ turn_off_enabled and mode == 'brightness' and direction | int < 0 and new_brightness | int <= min_bright | int }}"
 
-      # COLOR TEMPERATURE MODE variables
-      # Note: In mireds, LOWER values = WARMER (yellow), HIGHER values = COOLER (blue)
-      # So "increasing warmth" means DECREASING mireds
-      temp_change: "{{ (temp_step | int * press_count | int * direction | int * -1) }}"
-      current_temp: "{{ state_attr(target_entity, 'color_temp') | int(250) }}"
-      new_temp: >-
-        {% set new_val = (current_temp | int) + (temp_change | int) %}
-        {% if new_val < min_temp | int %}
-          {{ min_temp | int }}
-        {% elif new_val > max_temp | int %}
-          {{ max_temp | int }}
-        {% else %}
-          {{ new_val }}
-        {% endif %}
+  # Only proceed if mode is enabled and light is configured
+  - condition: template
+    value_template: "{{ mode_active }}"
 
   - choose:
       # ═══════════════════════════════════════════════════════════
-      # BRIGHTNESS MODE
+      # BUTTON PRESS
       # ═══════════════════════════════════════════════════════════
       - conditions:
           - condition: template
-            value_template: "{{ mode == 'brightness' }}"
+            value_template: "{{ is_button }}"
         sequence:
           - choose:
-              # Light is ON - adjust brightness
-              - conditions:
-                  - condition: template
-                    value_template: "{{ light_is_on }}"
+              - conditions: "{{ active_button == 'toggle' }}"
                 sequence:
-                  - choose:
-                      # Turn off if enabled and brightness would go too low
-                      - conditions:
-                          - condition: template
-                            value_template: "{{ should_turn_off }}"
-                        sequence:
-                          - service: light.turn_off
-                            target:
-                              entity_id: !input target_light
+                  - service: light.toggle
+                    target:
+                      entity_id: "{{ active_light }}"
 
-                    # Otherwise adjust brightness
-                    default:
-                      - service: light.turn_on
-                        target:
-                          entity_id: !input target_light
-                        data:
-                          brightness_step_pct: "{{ brightness_change }}"
-
-              # Light is OFF - turn on if scrolling up
-              - conditions:
-                  - condition: template
-                    value_template: "{{ not light_is_on and direction | int > 0 }}"
+              - conditions: "{{ active_button == 'turn_on' }}"
                 sequence:
                   - service: light.turn_on
                     target:
-                      entity_id: !input target_light
+                      entity_id: "{{ active_light }}"
+
+              - conditions: "{{ active_button == 'turn_off' }}"
+                sequence:
+                  - service: light.turn_off
+                    target:
+                      entity_id: "{{ active_light }}"
+
+              - conditions: "{{ active_button == 'brightness_25' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ active_light }}"
                     data:
-                      brightness_pct: "{{ startup_bright | int }}"
+                      brightness_pct: 25
+
+              - conditions: "{{ active_button == 'brightness_50' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ active_light }}"
+                    data:
+                      brightness_pct: 50
+
+              - conditions: "{{ active_button == 'brightness_75' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ active_light }}"
+                    data:
+                      brightness_pct: 75
+
+              - conditions: "{{ active_button == 'brightness_100' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ active_light }}"
+                    data:
+                      brightness_pct: 100
 
       # ═══════════════════════════════════════════════════════════
-      # COLOR TEMPERATURE MODE
+      # SCROLL – BRIGHTNESS MODE
       # ═══════════════════════════════════════════════════════════
       - conditions:
           - condition: template
-            value_template: "{{ mode == 'color_temp' }}"
+            value_template: "{{ (is_scroll_right or is_scroll_left) and active_type == 'brightness' }}"
         sequence:
-          - choose:
-              # Light is ON - adjust color temperature
-              - conditions:
-                  - condition: template
-                    value_template: "{{ light_is_on }}"
-                sequence:
-                  - service: light.turn_on
-                    target:
-                      entity_id: !input target_light
-                    data:
-                      color_temp: "{{ new_temp | int }}"
+          - service: light.turn_on
+            target:
+              entity_id: "{{ active_light }}"
+            data:
+              brightness_step_pct: "{{ active_step | int * direction | int }}"
 
-              # Light is OFF - turn on with default temp if scrolling
-              - conditions:
-                  - condition: template
-                    value_template: "{{ not light_is_on }}"
-                sequence:
-                  - service: light.turn_on
-                    target:
-                      entity_id: !input target_light
-                    data:
-                      brightness_pct: "{{ startup_bright | int }}"
-                      color_temp: "{{ new_temp | int }}"
+      # ═══════════════════════════════════════════════════════════
+      # SCROLL – COLOR TEMPERATURE MODE
+      # ═══════════════════════════════════════════════════════════
+      - conditions:
+          - condition: template
+            value_template: "{{ (is_scroll_right or is_scroll_left) and active_type == 'color_temp' }}"
+        sequence:
+          - variables:
+              # In mireds: lower = warmer, higher = cooler
+              # "Increasing warmth" means decreasing mireds, so we invert direction
+              current_temp: "{{ state_attr(active_light, 'color_temp') | int(250) }}"
+              temp_change: "{{ active_step | int * direction | int * -1 }}"
+              new_temp: >-
+                {% set new_val = current_temp | int + temp_change | int %}
+                {% if new_val < temp_min | int %}
+                  {{ temp_min | int }}
+                {% elif new_val > temp_max | int %}
+                  {{ temp_max | int }}
+                {% else %}
+                  {{ new_val }}
+                {% endif %}
+
+          - service: light.turn_on
+            target:
+              entity_id: "{{ active_light }}"
+            data:
+              color_temp: "{{ new_temp | int }}"
 
 mode: queued
 max: 20

@@ -4,18 +4,19 @@ Control your smart home with the IKEA Bilresa scroll wheel remote using these Ho
 
 ## Available Blueprints
 
-### 🔘 Scroll Wheel – Brightness & Color Temperature (Recommended)
+### 🎯 Scroll Wheel – 3 Modes Control (Recommended)
 
-Simple and intuitive control using the scroll wheel with dual mode support.
+Complete control using all 3 modes of the IKEA Bilresa. Each mode can control a different light with scroll wheel + button press.
 
 **Features:**
-- **Dual Mode**: Switch between brightness control and color temperature control
-- Single scroll wheel entity configuration
-- Adjustable step sizes for both brightness and color temperature
-- Configurable scroll direction (right/left increases)
-- Optional turn-off on extreme scroll (brightness mode)
-- Startup brightness setting
-- Full color temperature range support (153-500 mireds)
+- **3 Independent Modes**: Each mode (1, 2, 3) controls a different light
+- **Per-Mode Configuration**:
+  - Choose brightness or color temperature control
+  - Configurable scroll direction
+  - Adjustable step size
+  - Custom button press actions (toggle, on/off, or set brightness)
+- **Flexible**: Enable/disable each mode independently
+- **Perfect for**: Control living room brightness (mode 1), bedroom brightness (mode 2), and color temperature (mode 3)
 
 <a href="https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2Fcorentinnormand%2Fikea_bilresa_scrollwheel%2Fblob%2Fmain%2Fikea_bilresa_scroll_wheel.yaml" target="_blank" rel="noreferrer noopener"><img src="https://my.home-assistant.io/badges/blueprint_import.svg" alt="Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled." /></a>
 
