@@ -107,23 +107,23 @@ blueprint:
 
     mode_2_increase_temperature_step:
       name: "Mode 2: Temperature Increase Step"
-      description: "How much to increase color temperature per scroll (mireds)"
-      default: 30
+      description: "How much to increase color temperature per scroll (Kelvin)"
+      default: 300
       selector:
         number:
-          min: 5
-          max: 100
-          unit_of_measurement: "mireds"
+          min: 50
+          max: 1000
+          unit_of_measurement: "K"
 
     mode_2_decrease_temperature_step:
       name: "Mode 2: Temperature Decrease Step"
-      description: "How much to decrease color temperature per scroll (mireds)"
-      default: 30
+      description: "How much to decrease color temperature per scroll (Kelvin)"
+      default: 300
       selector:
         number:
-          min: 5
-          max: 100
-          unit_of_measurement: "mireds"
+          min: 50
+          max: 1000
+          unit_of_measurement: "K"
 
     mode_2_scroll_right_action:
       name: "Mode 2: Scroll Right Action"
@@ -132,9 +132,9 @@ blueprint:
       selector:
         select:
           options:
-            - label: "Warmer (increase mireds)"
+            - label: "Warmer (decrease Kelvin)"
               value: "warmer"
-            - label: "Cooler (decrease mireds)"
+            - label: "Cooler (increase Kelvin)"
               value: "cooler"
 
     # Common settings
@@ -270,12 +270,16 @@ action:
             target:
               entity_id: "{{ mode_2_target }}"
             data:
-              color_temp: >-
-                {% set current = state_attr(mode_2_target, 'color_temp') | int %}
+              kelvin: >-
+                {% set current = state_attr(mode_2_target, 'color_temp_kelvin') %}
+                {% if current is none %}
+                  {% set current = 4000 %}
+                {% endif %}
+                {% set current = current | int(4000) %}
                 {% if mode_2_temp_scroll_direction == 'warmer' %}
-                  {{ current + mode_2_temp_increase_step }}
+                  {{ [current - mode_2_temp_decrease_step, 2000] | max }}
                 {% else %}
-                  {{ current - mode_2_temp_decrease_step }}
+                  {{ [current + mode_2_temp_increase_step, 6500] | min }}
                 {% endif %}
 
       # Mode 2: Scroll left
@@ -289,12 +293,16 @@ action:
             target:
               entity_id: "{{ mode_2_target }}"
             data:
-              color_temp: >-
-                {% set current = state_attr(mode_2_target, 'color_temp') | int %}
+              kelvin: >-
+                {% set current = state_attr(mode_2_target, 'color_temp_kelvin') %}
+                {% if current is none %}
+                  {% set current = 4000 %}
+                {% endif %}
+                {% set current = current | int(4000) %}
                 {% if mode_2_temp_scroll_direction == 'warmer' %}
-                  {{ current - mode_2_temp_decrease_step }}
+                  {{ [current + mode_2_temp_increase_step, 6500] | min }}
                 {% else %}
-                  {{ current + mode_2_temp_increase_step }}
+                  {{ [current - mode_2_temp_decrease_step, 2000] | max }}
                 {% endif %}
 
 mode: !input automation_mode
