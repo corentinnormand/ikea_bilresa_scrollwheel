@@ -4,9 +4,23 @@ blueprint:
   domain: automation
 
   input:
-    scroll_wheel_entity:
-      name: "Scroll Wheel Entity"
-      description: "The event entity for the scroll wheel"
+    scroll_right_entity:
+      name: "Scroll Right Entity"
+      description: "The event entity for scroll right actions"
+      selector:
+        entity:
+          domain: event
+
+    scroll_left_entity:
+      name: "Scroll Left Entity"
+      description: "The event entity for scroll left actions"
+      selector:
+        entity:
+          domain: event
+
+    button_press_entity:
+      name: "Button Press Entity"
+      description: "The event entity for button press actions"
       selector:
         entity:
           domain: event
@@ -52,14 +66,17 @@ blueprint:
 
 trigger:
   - platform: state
-    entity_id: !input scroll_wheel_entity
+    entity_id: !input scroll_right_entity
+    id: scroll_right
+  - platform: state
+    entity_id: !input scroll_left_entity
+    id: scroll_left
+  - platform: state
+    entity_id: !input button_press_entity
+    id: button_press
 
 action:
   - variables:
-      event_type: "{{ state_attr(trigger.entity_id, 'event_type') }}"
-      is_scroll_right: "{{ 'rotate_right' in event_type }}"
-      is_scroll_left: "{{ 'rotate_left' in event_type }}"
-      is_button: "{{ 'press' in event_type or 'release' in event_type }}"
       target: !input target_light
       increase_step: !input increase_brightness_step
       decrease_step: !input decrease_brightness_step
@@ -68,8 +85,8 @@ action:
   - choose:
       # Button press - Toggle on/off
       - conditions:
-          - condition: template
-            value_template: "{{ is_button }}"
+          - condition: trigger
+            id: button_press
         sequence:
           - service: light.toggle
             target:
@@ -77,8 +94,8 @@ action:
 
       # Scroll right
       - conditions:
-          - condition: template
-            value_template: "{{ is_scroll_right }}"
+          - condition: trigger
+            id: scroll_right
         sequence:
           - service: light.turn_on
             target:
@@ -93,8 +110,8 @@ action:
 
       # Scroll left
       - conditions:
-          - condition: template
-            value_template: "{{ is_scroll_left }}"
+          - condition: trigger
+            id: scroll_left
         sequence:
           - service: light.turn_on
             target:
