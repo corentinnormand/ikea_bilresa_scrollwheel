@@ -1,185 +1,139 @@
 blueprint:
-  name: "IKEA Bilresa Scroll Wheel – Simple Brightness Control"
-  description: "Control a light's brightness using the IKEA Bilresa scroll wheel. Scroll to adjust brightness, press to toggle on/off."
+  name: "IKEA Bilresa Scroll Wheel – Dual Mode Control"
+  description: "Control a light using the IKEA Bilresa scroll wheel. Choose between brightness control or color temperature control modes."
   domain: automation
   input:
-    mode_1:
-      name: "Mode 1"
-      input:
-        scroll_right_entity:
-          name: "Scroll Right Entity"
-          description: "The event entity for scroll right actions"
-          selector:
-            entity:
-              domain: event
+    control_mode:
+      name: "Control Mode"
+      description: "Choose whether to control brightness or color temperature"
+      default: "brightness"
+      selector:
+        select:
+          options:
+            - label: "Brightness Control"
+              value: "brightness"
+            - label: "Color Temperature Control"
+              value: "temperature"
 
-        scroll_left_entity:
-          name: "Scroll Left Entity"
-          description: "The event entity for scroll left actions"
-          selector:
-            entity:
-              domain: event
+    scroll_right_entity:
+      name: "Scroll Right Entity"
+      description: "The event entity for scroll right actions"
+      selector:
+        entity:
+          domain: event
 
-        button_press_entity:
-          name: "Button Press Entity"
-          description: "The event entity for button press actions"
-          selector:
-            entity:
-              domain: event
+    scroll_left_entity:
+      name: "Scroll Left Entity"
+      description: "The event entity for scroll left actions"
+      selector:
+        entity:
+          domain: event
 
-        target_light:
-          name: "Target Light"
-          description: "The light to control"
-          selector:
-            entity:
-              domain: light
+    button_press_entity:
+      name: "Button Press Entity"
+      description: "The event entity for button press actions"
+      selector:
+        entity:
+          domain: event
 
-        increase_brightness_step:
-          name: "Brightness Increase Step"
-          description: "How much to increase brightness per scroll (percentage)"
-          default: 10
-          selector:
-            number:
-              min: 1
-              max: 50
-              unit_of_measurement: "%"
+    target_light:
+      name: "Target Light"
+      description: "The light to control"
+      selector:
+        entity:
+          domain: light
 
-        decrease_brightness_step:
-          name: "Brightness Decrease Step"
-          description: "How much to decrease brightness per scroll (percentage)"
-          default: 10
-          selector:
-            number:
-              min: 1
-              max: 50
-              unit_of_measurement: "%"
+    # Brightness mode settings
+    increase_brightness_step:
+      name: "Brightness Increase Step"
+      description: "How much to increase brightness per scroll (percentage) - Only for Brightness mode"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
 
-        scroll_right_action:
-          name: "Scroll Right Action"
-          description: "What happens when scrolling right"
-          default: "increase"
-          selector:
-            select:
-              options:
-                - label: "Increase Brightness"
-                  value: "increase"
-                - label: "Decrease Brightness"
-                  value: "decrease"
+    decrease_brightness_step:
+      name: "Brightness Decrease Step"
+      description: "How much to decrease brightness per scroll (percentage) - Only for Brightness mode"
+      default: 10
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
 
-        automation_mode:
-          name: "Automation Mode"
-          description: "How to handle multiple triggers"
-          default: "queued"
-          selector:
-            select:
-              options:
-                - label: "Queued (recommended for smooth scrolling)"
-                  value: "queued"
-                - label: "Single (ignore new triggers while running)"
-                  value: "single"
-                - label: "Restart (restart on new trigger)"
-                  value: "restart"
-                - label: "Parallel (run multiple instances)"
-                  value: "parallel"
+    brightness_scroll_right_action:
+      name: "Brightness: Scroll Right Action"
+      description: "What happens when scrolling right in Brightness mode"
+      default: "increase"
+      selector:
+        select:
+          options:
+            - label: "Increase Brightness"
+              value: "increase"
+            - label: "Decrease Brightness"
+              value: "decrease"
 
-        max_queue:
-          name: "Maximum Queue Size"
-          description: "Maximum number of queued scroll actions (only applies in queued mode)"
-          default: 20
-          selector:
-            number:
-              min: 1
-              max: 100
-              unit_of_measurement: "actions"
+    # Temperature mode settings
+    increase_temperature_step:
+      name: "Temperature Increase Step"
+      description: "How much to increase color temperature per scroll (mireds) - Only for Temperature mode"
+      default: 30
+      selector:
+        number:
+          min: 5
+          max: 100
+          unit_of_measurement: "mireds"
 
-    mode_2:
-      name: "Mode 2 - Temperature Control"
-      input:
-        scroll_right_entity:
-          name: "Scroll Right Entity"
-          description: "The event entity for scroll right actions"
-          selector:
-            entity:
-              domain: event
+    decrease_temperature_step:
+      name: "Temperature Decrease Step"
+      description: "How much to decrease color temperature per scroll (mireds) - Only for Temperature mode"
+      default: 30
+      selector:
+        number:
+          min: 5
+          max: 100
+          unit_of_measurement: "mireds"
 
-        scroll_left_entity:
-          name: "Scroll Left Entity"
-          description: "The event entity for scroll left actions"
-          selector:
-            entity:
-              domain: event
+    temperature_scroll_right_action:
+      name: "Temperature: Scroll Right Action"
+      description: "What happens when scrolling right in Temperature mode"
+      default: "warmer"
+      selector:
+        select:
+          options:
+            - label: "Warmer (increase mireds)"
+              value: "warmer"
+            - label: "Cooler (decrease mireds)"
+              value: "cooler"
 
-        button_press_entity:
-          name: "Button Press Entity"
-          description: "The event entity for button press actions"
-          selector:
-            entity:
-              domain: event
+    automation_mode:
+      name: "Automation Mode"
+      description: "How to handle multiple triggers"
+      default: "queued"
+      selector:
+        select:
+          options:
+            - label: "Queued (recommended for smooth scrolling)"
+              value: "queued"
+            - label: "Single (ignore new triggers while running)"
+              value: "single"
+            - label: "Restart (restart on new trigger)"
+              value: "restart"
+            - label: "Parallel (run multiple instances)"
+              value: "parallel"
 
-        target_light:
-          name: "Target Light"
-          description: "The light to control (must support color temperature)"
-          selector:
-            entity:
-              domain: light
-
-        increase_temperature_step:
-          name: "Temperature Increase Step"
-          description: "How much to increase color temperature per scroll (mireds)"
-          default: 30
-          selector:
-            number:
-              min: 5
-              max: 100
-              unit_of_measurement: "mireds"
-
-        decrease_temperature_step:
-          name: "Temperature Decrease Step"
-          description: "How much to decrease color temperature per scroll (mireds)"
-          default: 30
-          selector:
-            number:
-              min: 5
-              max: 100
-              unit_of_measurement: "mireds"
-
-        scroll_right_action:
-          name: "Scroll Right Action"
-          description: "What happens when scrolling right"
-          default: "warmer"
-          selector:
-            select:
-              options:
-                - label: "Warmer (increase mireds)"
-                  value: "warmer"
-                - label: "Cooler (decrease mireds)"
-                  value: "cooler"
-
-        automation_mode:
-          name: "Automation Mode"
-          description: "How to handle multiple triggers"
-          default: "queued"
-          selector:
-            select:
-              options:
-                - label: "Queued (recommended for smooth scrolling)"
-                  value: "queued"
-                - label: "Single (ignore new triggers while running)"
-                  value: "single"
-                - label: "Restart (restart on new trigger)"
-                  value: "restart"
-                - label: "Parallel (run multiple instances)"
-                  value: "parallel"
-
-        max_queue:
-          name: "Maximum Queue Size"
-          description: "Maximum number of queued scroll actions (only applies in queued mode)"
-          default: 20
-          selector:
-            number:
-              min: 1
-              max: 100
-              unit_of_measurement: "actions"
+    max_queue:
+      name: "Maximum Queue Size"
+      description: "Maximum number of queued scroll actions (only applies in queued mode)"
+      default: 20
+      selector:
+        number:
+          min: 1
+          max: 100
+          unit_of_measurement: "actions"
 
 trigger:
   - platform: state
@@ -195,9 +149,15 @@ trigger:
 action:
   - variables:
       target: !input target_light
-      increase_step: !input increase_brightness_step
-      decrease_step: !input decrease_brightness_step
-      scroll_right_direction: !input scroll_right_action
+      mode: !input control_mode
+      # Brightness variables
+      brightness_increase_step: !input increase_brightness_step
+      brightness_decrease_step: !input decrease_brightness_step
+      brightness_scroll_direction: !input brightness_scroll_right_action
+      # Temperature variables
+      temp_increase_step: !input increase_temperature_step
+      temp_decrease_step: !input decrease_temperature_step
+      temp_scroll_direction: !input temperature_scroll_right_action
 
   - choose:
       # Button press - Toggle on/off
@@ -214,32 +174,76 @@ action:
           - condition: trigger
             id: scroll_right
         sequence:
-          - service: light.turn_on
-            target:
-              entity_id: "{{ target }}"
-            data:
-              brightness_step_pct: >-
-                {% if scroll_right_direction == 'increase' %}
-                  {{ increase_step }}
-                {% else %}
-                  {{ -decrease_step }}
-                {% endif %}
+          - choose:
+              # Brightness mode
+              - conditions:
+                  - condition: template
+                    value_template: "{{ mode == 'brightness' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ target }}"
+                    data:
+                      brightness_step_pct: >-
+                        {% if brightness_scroll_direction == 'increase' %}
+                          {{ brightness_increase_step }}
+                        {% else %}
+                          {{ -brightness_decrease_step }}
+                        {% endif %}
+              # Temperature mode
+              - conditions:
+                  - condition: template
+                    value_template: "{{ mode == 'temperature' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ target }}"
+                    data:
+                      color_temp: >-
+                        {% set current = state_attr(target, 'color_temp') | int %}
+                        {% if temp_scroll_direction == 'warmer' %}
+                          {{ current + temp_increase_step }}
+                        {% else %}
+                          {{ current - temp_decrease_step }}
+                        {% endif %}
 
       # Scroll left
       - conditions:
           - condition: trigger
             id: scroll_left
         sequence:
-          - service: light.turn_on
-            target:
-              entity_id: "{{ target }}"
-            data:
-              brightness_step_pct: >-
-                {% if scroll_right_direction == 'increase' %}
-                  {{ -decrease_step }}
-                {% else %}
-                  {{ increase_step }}
-                {% endif %}
+          - choose:
+              # Brightness mode
+              - conditions:
+                  - condition: template
+                    value_template: "{{ mode == 'brightness' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ target }}"
+                    data:
+                      brightness_step_pct: >-
+                        {% if brightness_scroll_direction == 'increase' %}
+                          {{ -brightness_decrease_step }}
+                        {% else %}
+                          {{ brightness_increase_step }}
+                        {% endif %}
+              # Temperature mode
+              - conditions:
+                  - condition: template
+                    value_template: "{{ mode == 'temperature' }}"
+                sequence:
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ target }}"
+                    data:
+                      color_temp: >-
+                        {% set current = state_attr(target, 'color_temp') | int %}
+                        {% if temp_scroll_direction == 'warmer' %}
+                          {{ current - temp_decrease_step }}
+                        {% else %}
+                          {{ current + temp_increase_step }}
+                        {% endif %}
 
 mode: !input automation_mode
 max: !input max_queue
