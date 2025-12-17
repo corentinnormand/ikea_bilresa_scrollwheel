@@ -1,6 +1,6 @@
 blueprint:
   name: "IKEA Bilresa Scroll Wheel – 3 Modes Control"
-  description: "Control up to 3 different lights or functions using the 3 modes of the IKEA Bilresa scroll wheel. Each mode has scroll right, scroll left, and button press."
+  description: "Control up to 3 different functions using the 3 modes of the IKEA Bilresa scroll wheel. Each mode has scroll right, scroll left, and button press actions."
   domain: automation
 
   input:
@@ -14,23 +14,28 @@ blueprint:
     # ════════════════════════════════════════════════════════════
     # MODE 1
     # ════════════════════════════════════════════════════════════
-    mode1_enabled:
-      name: "Mode 1 – Enable"
-      description: "Enable Mode 1 controls"
-      default: true
+    mode1_control_mode:
+      name: "Mode 1 – Control Mode"
+      description: "Choose between simple light control or custom actions"
       selector:
-        boolean:
+        select:
+          options:
+            - label: "Simple Light Control (Brightness/Color Temp)"
+              value: "simple"
+            - label: "Custom Actions"
+              value: "custom"
+      default: "simple"
 
     mode1_target_light:
-      name: "Mode 1 – Target Light"
-      description: "Light to control in Mode 1"
+      name: "Mode 1 – Target Light (Simple Mode)"
+      description: "Light to control in Mode 1 when using Simple mode"
       default: ""
       selector:
         entity:
           domain: light
 
     mode1_control_type:
-      name: "Mode 1 – Control Type"
+      name: "Mode 1 – Control Type (Simple Mode)"
       description: "What to control with scroll wheel in Mode 1"
       selector:
         select:
@@ -42,7 +47,7 @@ blueprint:
       default: "brightness"
 
     mode1_scroll_direction:
-      name: "Mode 1 – Scroll Direction"
+      name: "Mode 1 – Scroll Direction (Simple Mode)"
       description: "Which direction increases brightness/warmth"
       selector:
         select:
@@ -54,17 +59,17 @@ blueprint:
       default: "right_up"
 
     mode1_step_size:
-      name: "Mode 1 – Step Size"
+      name: "Mode 1 – Step Size (Simple Mode)"
       description: "Step size for brightness (%) or color temp (mireds)"
-      default: 5
+      default: 10
       selector:
         number:
           min: 1
           max: 50
 
     mode1_button_action:
-      name: "Mode 1 – Button Press Action"
-      description: "What happens when you press the center button"
+      name: "Mode 1 – Button Action (Simple Mode)"
+      description: "What happens when you press the button"
       selector:
         select:
           options:
@@ -84,26 +89,52 @@ blueprint:
               value: "brightness_100"
       default: "toggle"
 
+    mode1_scroll_right_action:
+      name: "Mode 1 – Scroll Right Action (Custom Mode)"
+      description: "Custom action when scrolling right in Mode 1"
+      default: []
+      selector:
+        action:
+
+    mode1_scroll_left_action:
+      name: "Mode 1 – Scroll Left Action (Custom Mode)"
+      description: "Custom action when scrolling left in Mode 1"
+      default: []
+      selector:
+        action:
+
+    mode1_click_action:
+      name: "Mode 1 – Click Action (Custom Mode)"
+      description: "Custom action when clicking the button in Mode 1"
+      default: []
+      selector:
+        action:
+
     # ════════════════════════════════════════════════════════════
     # MODE 2
     # ════════════════════════════════════════════════════════════
-    mode2_enabled:
-      name: "Mode 2 – Enable"
-      description: "Enable Mode 2 controls"
-      default: false
+    mode2_control_mode:
+      name: "Mode 2 – Control Mode"
+      description: "Choose between simple light control or custom actions"
       selector:
-        boolean:
+        select:
+          options:
+            - label: "Simple Light Control (Brightness/Color Temp)"
+              value: "simple"
+            - label: "Custom Actions"
+              value: "custom"
+      default: "simple"
 
     mode2_target_light:
-      name: "Mode 2 – Target Light"
-      description: "Light to control in Mode 2"
+      name: "Mode 2 – Target Light (Simple Mode)"
+      description: "Light to control in Mode 2 when using Simple mode"
       default: ""
       selector:
         entity:
           domain: light
 
     mode2_control_type:
-      name: "Mode 2 – Control Type"
+      name: "Mode 2 – Control Type (Simple Mode)"
       description: "What to control with scroll wheel in Mode 2"
       selector:
         select:
@@ -115,7 +146,7 @@ blueprint:
       default: "brightness"
 
     mode2_scroll_direction:
-      name: "Mode 2 – Scroll Direction"
+      name: "Mode 2 – Scroll Direction (Simple Mode)"
       description: "Which direction increases brightness/warmth"
       selector:
         select:
@@ -127,17 +158,17 @@ blueprint:
       default: "right_up"
 
     mode2_step_size:
-      name: "Mode 2 – Step Size"
+      name: "Mode 2 – Step Size (Simple Mode)"
       description: "Step size for brightness (%) or color temp (mireds)"
-      default: 5
+      default: 10
       selector:
         number:
           min: 1
           max: 50
 
     mode2_button_action:
-      name: "Mode 2 – Button Press Action"
-      description: "What happens when you press the center button"
+      name: "Mode 2 – Button Action (Simple Mode)"
+      description: "What happens when you press the button"
       selector:
         select:
           options:
@@ -157,26 +188,52 @@ blueprint:
               value: "brightness_100"
       default: "toggle"
 
+    mode2_scroll_right_action:
+      name: "Mode 2 – Scroll Right Action (Custom Mode)"
+      description: "Custom action when scrolling right in Mode 2"
+      default: []
+      selector:
+        action:
+
+    mode2_scroll_left_action:
+      name: "Mode 2 – Scroll Left Action (Custom Mode)"
+      description: "Custom action when scrolling left in Mode 2"
+      default: []
+      selector:
+        action:
+
+    mode2_click_action:
+      name: "Mode 2 – Click Action (Custom Mode)"
+      description: "Custom action when clicking the button in Mode 2"
+      default: []
+      selector:
+        action:
+
     # ════════════════════════════════════════════════════════════
     # MODE 3
     # ════════════════════════════════════════════════════════════
-    mode3_enabled:
-      name: "Mode 3 – Enable"
-      description: "Enable Mode 3 controls"
-      default: false
+    mode3_control_mode:
+      name: "Mode 3 – Control Mode"
+      description: "Choose between simple light control or custom actions"
       selector:
-        boolean:
+        select:
+          options:
+            - label: "Simple Light Control (Brightness/Color Temp)"
+              value: "simple"
+            - label: "Custom Actions"
+              value: "custom"
+      default: "simple"
 
     mode3_target_light:
-      name: "Mode 3 – Target Light"
-      description: "Light to control in Mode 3"
+      name: "Mode 3 – Target Light (Simple Mode)"
+      description: "Light to control in Mode 3 when using Simple mode"
       default: ""
       selector:
         entity:
           domain: light
 
     mode3_control_type:
-      name: "Mode 3 – Control Type"
+      name: "Mode 3 – Control Type (Simple Mode)"
       description: "What to control with scroll wheel in Mode 3"
       selector:
         select:
@@ -188,7 +245,7 @@ blueprint:
       default: "color_temp"
 
     mode3_scroll_direction:
-      name: "Mode 3 – Scroll Direction"
+      name: "Mode 3 – Scroll Direction (Simple Mode)"
       description: "Which direction increases brightness/warmth"
       selector:
         select:
@@ -200,7 +257,7 @@ blueprint:
       default: "right_up"
 
     mode3_step_size:
-      name: "Mode 3 – Step Size"
+      name: "Mode 3 – Step Size (Simple Mode)"
       description: "Step size for brightness (%) or color temp (mireds)"
       default: 25
       selector:
@@ -209,8 +266,8 @@ blueprint:
           max: 50
 
     mode3_button_action:
-      name: "Mode 3 – Button Press Action"
-      description: "What happens when you press the center button"
+      name: "Mode 3 – Button Action (Simple Mode)"
+      description: "What happens when you press the button"
       selector:
         select:
           options:
@@ -230,12 +287,33 @@ blueprint:
               value: "brightness_100"
       default: "toggle"
 
+    mode3_scroll_right_action:
+      name: "Mode 3 – Scroll Right Action (Custom Mode)"
+      description: "Custom action when scrolling right in Mode 3"
+      default: []
+      selector:
+        action:
+
+    mode3_scroll_left_action:
+      name: "Mode 3 – Scroll Left Action (Custom Mode)"
+      description: "Custom action when scrolling left in Mode 3"
+      default: []
+      selector:
+        action:
+
+    mode3_click_action:
+      name: "Mode 3 – Click Action (Custom Mode)"
+      description: "Custom action when clicking the button in Mode 3"
+      default: []
+      selector:
+        action:
+
     # ════════════════════════════════════════════════════════════
-    # SHARED SETTINGS
+    # SHARED SETTINGS (for Simple Mode)
     # ════════════════════════════════════════════════════════════
     color_temp_min:
       name: "Color Temperature – Minimum (mireds)"
-      description: "Warmest color temperature (lower = warmer/yellow)"
+      description: "Warmest color temperature for Simple mode (lower = warmer/yellow)"
       default: 153
       selector:
         number:
@@ -244,7 +322,7 @@ blueprint:
 
     color_temp_max:
       name: "Color Temperature – Maximum (mireds)"
-      description: "Coolest color temperature (higher = cooler/blue)"
+      description: "Coolest color temperature for Simple mode (higher = cooler/blue)"
       default: 500
       selector:
         number:
@@ -261,7 +339,6 @@ action:
       event_type: "{{ state_attr(trigger.entity_id, 'event_type') }}"
 
       # Determine which mode (1, 2, or 3) based on event type
-      # Assuming event types like: mode1_rotate_right, mode2_rotate_left, mode3_button_press, etc.
       current_mode: >-
         {% if 'mode_1' in event_type or event_type in ['rotate_right', 'rotate_left', 'short_release'] %}
           1
@@ -278,22 +355,22 @@ action:
       is_scroll_left: "{{ 'rotate_left' in event_type }}"
       is_button: "{{ 'press' in event_type or 'release' in event_type }}"
 
-      # Load mode-specific settings
-      mode1_on: !input mode1_enabled
+      # Load all mode settings
+      mode1_ctrl_mode: !input mode1_control_mode
       mode1_light: !input mode1_target_light
       mode1_type: !input mode1_control_type
       mode1_dir: !input mode1_scroll_direction
       mode1_step: !input mode1_step_size
       mode1_btn: !input mode1_button_action
 
-      mode2_on: !input mode2_enabled
+      mode2_ctrl_mode: !input mode2_control_mode
       mode2_light: !input mode2_target_light
       mode2_type: !input mode2_control_type
       mode2_dir: !input mode2_scroll_direction
       mode2_step: !input mode2_step_size
       mode2_btn: !input mode2_button_action
 
-      mode3_on: !input mode3_enabled
+      mode3_ctrl_mode: !input mode3_control_mode
       mode3_light: !input mode3_target_light
       mode3_type: !input mode3_control_type
       mode3_dir: !input mode3_scroll_direction
@@ -303,173 +380,367 @@ action:
       temp_min: !input color_temp_min
       temp_max: !input color_temp_max
 
-      # Select active mode settings
-      active_light: >-
+      # Determine active mode control type
+      active_ctrl_mode: >-
         {% if current_mode == 1 %}
-          {{ mode1_light }}
+          {{ mode1_ctrl_mode }}
         {% elif current_mode == 2 %}
-          {{ mode2_light }}
+          {{ mode2_ctrl_mode }}
         {% else %}
-          {{ mode3_light }}
+          {{ mode3_ctrl_mode }}
         {% endif %}
-
-      active_type: >-
-        {% if current_mode == 1 %}
-          {{ mode1_type }}
-        {% elif current_mode == 2 %}
-          {{ mode2_type }}
-        {% else %}
-          {{ mode3_type }}
-        {% endif %}
-
-      active_dir: >-
-        {% if current_mode == 1 %}
-          {{ mode1_dir }}
-        {% elif current_mode == 2 %}
-          {{ mode2_dir }}
-        {% else %}
-          {{ mode3_dir }}
-        {% endif %}
-
-      active_step: >-
-        {% if current_mode == 1 %}
-          {{ mode1_step }}
-        {% elif current_mode == 2 %}
-          {{ mode2_step }}
-        {% else %}
-          {{ mode3_step }}
-        {% endif %}
-
-      active_button: >-
-        {% if current_mode == 1 %}
-          {{ mode1_btn }}
-        {% elif current_mode == 2 %}
-          {{ mode2_btn }}
-        {% else %}
-          {{ mode3_btn }}
-        {% endif %}
-
-      # Calculate direction (1 for increase, -1 for decrease)
-      direction: >-
-        {% if is_scroll_right %}
-          {{ 1 if active_dir == 'right_up' else -1 }}
-        {% else %}
-          {{ -1 if active_dir == 'right_up' else 1 }}
-        {% endif %}
-
-      # Check if mode is enabled and light is configured
-      mode_active: >-
-        {% if current_mode == 1 %}
-          {{ mode1_on and mode1_light != '' }}
-        {% elif current_mode == 2 %}
-          {{ mode2_on and mode2_light != '' }}
-        {% else %}
-          {{ mode3_on and mode3_light != '' }}
-        {% endif %}
-
-  # Only proceed if mode is enabled and light is configured
-  - condition: template
-    value_template: "{{ mode_active }}"
 
   - choose:
       # ═══════════════════════════════════════════════════════════
-      # BUTTON PRESS
+      # MODE 1 - SIMPLE MODE
       # ═══════════════════════════════════════════════════════════
       - conditions:
           - condition: template
-            value_template: "{{ is_button }}"
+            value_template: "{{ current_mode == 1 and mode1_ctrl_mode == 'simple' }}"
         sequence:
           - choose:
-              - conditions: "{{ active_button == 'toggle' }}"
+              # Button press
+              - conditions: "{{ is_button }}"
                 sequence:
-                  - service: light.toggle
-                    target:
-                      entity_id: "{{ active_light }}"
+                  - choose:
+                      - conditions: "{{ mode1_btn == 'toggle' }}"
+                        sequence:
+                          - service: light.toggle
+                            target:
+                              entity_id: "{{ mode1_light }}"
+                      - conditions: "{{ mode1_btn == 'turn_on' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode1_light }}"
+                      - conditions: "{{ mode1_btn == 'turn_off' }}"
+                        sequence:
+                          - service: light.turn_off
+                            target:
+                              entity_id: "{{ mode1_light }}"
+                      - conditions: "{{ mode1_btn == 'brightness_25' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode1_light }}"
+                            data:
+                              brightness_pct: 25
+                      - conditions: "{{ mode1_btn == 'brightness_50' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode1_light }}"
+                            data:
+                              brightness_pct: 50
+                      - conditions: "{{ mode1_btn == 'brightness_75' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode1_light }}"
+                            data:
+                              brightness_pct: 75
+                      - conditions: "{{ mode1_btn == 'brightness_100' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode1_light }}"
+                            data:
+                              brightness_pct: 100
 
-              - conditions: "{{ active_button == 'turn_on' }}"
+              # Brightness control
+              - conditions: "{{ (is_scroll_right or is_scroll_left) and mode1_type == 'brightness' }}"
                 sequence:
+                  - variables:
+                      direction: >-
+                        {% if is_scroll_right %}
+                          {{ 1 if mode1_dir == 'right_up' else -1 }}
+                        {% else %}
+                          {{ -1 if mode1_dir == 'right_up' else 1 }}
+                        {% endif %}
                   - service: light.turn_on
                     target:
-                      entity_id: "{{ active_light }}"
-
-              - conditions: "{{ active_button == 'turn_off' }}"
-                sequence:
-                  - service: light.turn_off
-                    target:
-                      entity_id: "{{ active_light }}"
-
-              - conditions: "{{ active_button == 'brightness_25' }}"
-                sequence:
-                  - service: light.turn_on
-                    target:
-                      entity_id: "{{ active_light }}"
+                      entity_id: "{{ mode1_light }}"
                     data:
-                      brightness_pct: 25
+                      brightness_step_pct: "{{ mode1_step | int * direction | int }}"
 
-              - conditions: "{{ active_button == 'brightness_50' }}"
+              # Color temperature control
+              - conditions: "{{ (is_scroll_right or is_scroll_left) and mode1_type == 'color_temp' }}"
                 sequence:
+                  - variables:
+                      direction: >-
+                        {% if is_scroll_right %}
+                          {{ 1 if mode1_dir == 'right_up' else -1 }}
+                        {% else %}
+                          {{ -1 if mode1_dir == 'right_up' else 1 }}
+                        {% endif %}
+                      current_temp: "{{ state_attr(mode1_light, 'color_temp') | int(250) }}"
+                      temp_change: "{{ mode1_step | int * direction | int * -1 }}"
+                      new_temp: >-
+                        {% set new_val = current_temp | int + temp_change | int %}
+                        {% if new_val < temp_min | int %}
+                          {{ temp_min | int }}
+                        {% elif new_val > temp_max | int %}
+                          {{ temp_max | int }}
+                        {% else %}
+                          {{ new_val }}
+                        {% endif %}
                   - service: light.turn_on
                     target:
-                      entity_id: "{{ active_light }}"
+                      entity_id: "{{ mode1_light }}"
                     data:
-                      brightness_pct: 50
-
-              - conditions: "{{ active_button == 'brightness_75' }}"
-                sequence:
-                  - service: light.turn_on
-                    target:
-                      entity_id: "{{ active_light }}"
-                    data:
-                      brightness_pct: 75
-
-              - conditions: "{{ active_button == 'brightness_100' }}"
-                sequence:
-                  - service: light.turn_on
-                    target:
-                      entity_id: "{{ active_light }}"
-                    data:
-                      brightness_pct: 100
+                      color_temp: "{{ new_temp | int }}"
 
       # ═══════════════════════════════════════════════════════════
-      # SCROLL – BRIGHTNESS MODE
+      # MODE 1 - CUSTOM MODE
       # ═══════════════════════════════════════════════════════════
       - conditions:
           - condition: template
-            value_template: "{{ (is_scroll_right or is_scroll_left) and active_type == 'brightness' }}"
-        sequence:
-          - service: light.turn_on
-            target:
-              entity_id: "{{ active_light }}"
-            data:
-              brightness_step_pct: "{{ active_step | int * direction | int }}"
+            value_template: "{{ current_mode == 1 and mode1_ctrl_mode == 'custom' and is_scroll_right }}"
+        sequence: !input mode1_scroll_right_action
+
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 1 and mode1_ctrl_mode == 'custom' and is_scroll_left }}"
+        sequence: !input mode1_scroll_left_action
+
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 1 and mode1_ctrl_mode == 'custom' and is_button }}"
+        sequence: !input mode1_click_action
 
       # ═══════════════════════════════════════════════════════════
-      # SCROLL – COLOR TEMPERATURE MODE
+      # MODE 2 - SIMPLE MODE
       # ═══════════════════════════════════════════════════════════
       - conditions:
           - condition: template
-            value_template: "{{ (is_scroll_right or is_scroll_left) and active_type == 'color_temp' }}"
+            value_template: "{{ current_mode == 2 and mode2_ctrl_mode == 'simple' }}"
         sequence:
-          - variables:
-              # In mireds: lower = warmer, higher = cooler
-              # "Increasing warmth" means decreasing mireds, so we invert direction
-              current_temp: "{{ state_attr(active_light, 'color_temp') | int(250) }}"
-              temp_change: "{{ active_step | int * direction | int * -1 }}"
-              new_temp: >-
-                {% set new_val = current_temp | int + temp_change | int %}
-                {% if new_val < temp_min | int %}
-                  {{ temp_min | int }}
-                {% elif new_val > temp_max | int %}
-                  {{ temp_max | int }}
-                {% else %}
-                  {{ new_val }}
-                {% endif %}
+          - choose:
+              # Button press
+              - conditions: "{{ is_button }}"
+                sequence:
+                  - choose:
+                      - conditions: "{{ mode2_btn == 'toggle' }}"
+                        sequence:
+                          - service: light.toggle
+                            target:
+                              entity_id: "{{ mode2_light }}"
+                      - conditions: "{{ mode2_btn == 'turn_on' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode2_light }}"
+                      - conditions: "{{ mode2_btn == 'turn_off' }}"
+                        sequence:
+                          - service: light.turn_off
+                            target:
+                              entity_id: "{{ mode2_light }}"
+                      - conditions: "{{ mode2_btn == 'brightness_25' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode2_light }}"
+                            data:
+                              brightness_pct: 25
+                      - conditions: "{{ mode2_btn == 'brightness_50' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode2_light }}"
+                            data:
+                              brightness_pct: 50
+                      - conditions: "{{ mode2_btn == 'brightness_75' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode2_light }}"
+                            data:
+                              brightness_pct: 75
+                      - conditions: "{{ mode2_btn == 'brightness_100' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode2_light }}"
+                            data:
+                              brightness_pct: 100
 
-          - service: light.turn_on
-            target:
-              entity_id: "{{ active_light }}"
-            data:
-              color_temp: "{{ new_temp | int }}"
+              # Brightness control
+              - conditions: "{{ (is_scroll_right or is_scroll_left) and mode2_type == 'brightness' }}"
+                sequence:
+                  - variables:
+                      direction: >-
+                        {% if is_scroll_right %}
+                          {{ 1 if mode2_dir == 'right_up' else -1 }}
+                        {% else %}
+                          {{ -1 if mode2_dir == 'right_up' else 1 }}
+                        {% endif %}
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ mode2_light }}"
+                    data:
+                      brightness_step_pct: "{{ mode2_step | int * direction | int }}"
+
+              # Color temperature control
+              - conditions: "{{ (is_scroll_right or is_scroll_left) and mode2_type == 'color_temp' }}"
+                sequence:
+                  - variables:
+                      direction: >-
+                        {% if is_scroll_right %}
+                          {{ 1 if mode2_dir == 'right_up' else -1 }}
+                        {% else %}
+                          {{ -1 if mode2_dir == 'right_up' else 1 }}
+                        {% endif %}
+                      current_temp: "{{ state_attr(mode2_light, 'color_temp') | int(250) }}"
+                      temp_change: "{{ mode2_step | int * direction | int * -1 }}"
+                      new_temp: >-
+                        {% set new_val = current_temp | int + temp_change | int %}
+                        {% if new_val < temp_min | int %}
+                          {{ temp_min | int }}
+                        {% elif new_val > temp_max | int %}
+                          {{ temp_max | int }}
+                        {% else %}
+                          {{ new_val }}
+                        {% endif %}
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ mode2_light }}"
+                    data:
+                      color_temp: "{{ new_temp | int }}"
+
+      # ═══════════════════════════════════════════════════════════
+      # MODE 2 - CUSTOM MODE
+      # ═══════════════════════════════════════════════════════════
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 2 and mode2_ctrl_mode == 'custom' and is_scroll_right }}"
+        sequence: !input mode2_scroll_right_action
+
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 2 and mode2_ctrl_mode == 'custom' and is_scroll_left }}"
+        sequence: !input mode2_scroll_left_action
+
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 2 and mode2_ctrl_mode == 'custom' and is_button }}"
+        sequence: !input mode2_click_action
+
+      # ═══════════════════════════════════════════════════════════
+      # MODE 3 - SIMPLE MODE
+      # ═══════════════════════════════════════════════════════════
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 3 and mode3_ctrl_mode == 'simple' }}"
+        sequence:
+          - choose:
+              # Button press
+              - conditions: "{{ is_button }}"
+                sequence:
+                  - choose:
+                      - conditions: "{{ mode3_btn == 'toggle' }}"
+                        sequence:
+                          - service: light.toggle
+                            target:
+                              entity_id: "{{ mode3_light }}"
+                      - conditions: "{{ mode3_btn == 'turn_on' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode3_light }}"
+                      - conditions: "{{ mode3_btn == 'turn_off' }}"
+                        sequence:
+                          - service: light.turn_off
+                            target:
+                              entity_id: "{{ mode3_light }}"
+                      - conditions: "{{ mode3_btn == 'brightness_25' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode3_light }}"
+                            data:
+                              brightness_pct: 25
+                      - conditions: "{{ mode3_btn == 'brightness_50' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode3_light }}"
+                            data:
+                              brightness_pct: 50
+                      - conditions: "{{ mode3_btn == 'brightness_75' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode3_light }}"
+                            data:
+                              brightness_pct: 75
+                      - conditions: "{{ mode3_btn == 'brightness_100' }}"
+                        sequence:
+                          - service: light.turn_on
+                            target:
+                              entity_id: "{{ mode3_light }}"
+                            data:
+                              brightness_pct: 100
+
+              # Brightness control
+              - conditions: "{{ (is_scroll_right or is_scroll_left) and mode3_type == 'brightness' }}"
+                sequence:
+                  - variables:
+                      direction: >-
+                        {% if is_scroll_right %}
+                          {{ 1 if mode3_dir == 'right_up' else -1 }}
+                        {% else %}
+                          {{ -1 if mode3_dir == 'right_up' else 1 }}
+                        {% endif %}
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ mode3_light }}"
+                    data:
+                      brightness_step_pct: "{{ mode3_step | int * direction | int }}"
+
+              # Color temperature control
+              - conditions: "{{ (is_scroll_right or is_scroll_left) and mode3_type == 'color_temp' }}"
+                sequence:
+                  - variables:
+                      direction: >-
+                        {% if is_scroll_right %}
+                          {{ 1 if mode3_dir == 'right_up' else -1 }}
+                        {% else %}
+                          {{ -1 if mode3_dir == 'right_up' else 1 }}
+                        {% endif %}
+                      current_temp: "{{ state_attr(mode3_light, 'color_temp') | int(250) }}"
+                      temp_change: "{{ mode3_step | int * direction | int * -1 }}"
+                      new_temp: >-
+                        {% set new_val = current_temp | int + temp_change | int %}
+                        {% if new_val < temp_min | int %}
+                          {{ temp_min | int }}
+                        {% elif new_val > temp_max | int %}
+                          {{ temp_max | int }}
+                        {% else %}
+                          {{ new_val }}
+                        {% endif %}
+                  - service: light.turn_on
+                    target:
+                      entity_id: "{{ mode3_light }}"
+                    data:
+                      color_temp: "{{ new_temp | int }}"
+
+      # ═══════════════════════════════════════════════════════════
+      # MODE 3 - CUSTOM MODE
+      # ═══════════════════════════════════════════════════════════
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 3 and mode3_ctrl_mode == 'custom' and is_scroll_right }}"
+        sequence: !input mode3_scroll_right_action
+
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 3 and mode3_ctrl_mode == 'custom' and is_scroll_left }}"
+        sequence: !input mode3_scroll_left_action
+
+      - conditions:
+          - condition: template
+            value_template: "{{ current_mode == 3 and mode3_ctrl_mode == 'custom' and is_button }}"
+        sequence: !input mode3_click_action
 
 mode: queued
 max: 20
