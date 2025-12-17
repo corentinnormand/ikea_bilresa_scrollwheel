@@ -165,11 +165,10 @@ blueprint:
     # BUTTON 2
     # ════════════════════════════════════════════════════════════
     button2_event_entity:
-      name: "Button 2 – Event Entity (optional)"
+      name: "Button 2 – Event Entity"
       selector:
         entity:
           domain: event
-      default: ""
   
     button2_single_press_light:
       name: "Button 2 – 1× Click Light"
@@ -179,7 +178,7 @@ blueprint:
       default: ""
   
     button2_single_press_action:
-      name: "Button 2 – 1× Klick Aktion"
+      name: "Button 2 – 1× Click Action"
       selector:
         select:
           options:
@@ -319,14 +318,13 @@ blueprint:
           unit_of_measurement: "%"
 
     # ════════════════════════════════════════════════════════════
-    # BUTTON 3 (mit Cover-Support)
+    # BUTTON 3 (with Cover Support)
     # ════════════════════════════════════════════════════════════
     button3_event_entity:
-      name: "Button 3 – Event Entity (optional)"
+      name: "Button 3 – Event Entity"
       selector:
         entity:
           domain: event
-      default: ""
   
     button3_single_press_light:
       name: "Button 3 – 1× Click Light"
@@ -349,7 +347,7 @@ blueprint:
       default: "light"
   
     button3_single_press_action:
-      name: "Button 3 – 1× Klick Aktion"
+      name: "Button 3 – 1× Click Aktion"
       selector:
         select:
           options:
@@ -377,14 +375,14 @@ blueprint:
       default: ""
   
     button3_single_press_cover:
-      name: "Button 3 – 1× Klick – Cover/Curtain (optional)"
+      name: "Button 3 – 1× Click – Cover/Curtain (optional)"
       selector:
         entity:
           domain: cover
       default: ""
   
     button3_single_press_cover_action:
-      name: "Button 3 – 1× Klick – Cover Action"
+      name: "Button 3 – 1× Click – Cover Action"
       selector:
         select:
           options:
@@ -447,14 +445,14 @@ blueprint:
       default: ""
   
     button3_double_press_cover:
-      name: "Button 3 – 2× Klick – Cover/Curtain (optional)"
+      name: "Button 3 – 2× Click – Cover/Curtain (optional)"
       selector:
         entity:
           domain: cover
       default: ""
   
     button3_double_press_cover_action:
-      name: "Button 3 – 2× Klick – Cover Action"
+      name: "Button 3 – 2× Click – Cover Action"
       selector:
         select:
           options:
@@ -517,14 +515,14 @@ blueprint:
       default: ""
   
     button3_triple_press_cover:
-      name: "Button 3 – 3× Klick – Cover/Curtain (optional)"
+      name: "Button 3 – 3× Click – Cover/Curtain (optional)"
       selector:
         entity:
           domain: cover
       default: ""
   
     button3_triple_press_cover_action:
-      name: "Button 3 – 3× Klick – Cover Action"
+      name: "Button 3 – 3× Click – Cover Action"
       selector:
         select:
           options:
