@@ -64,6 +64,26 @@ blueprint:
             - label: "Decrease Brightness"
               value: "decrease"
 
+    mode_1_min_brightness:
+      name: "Brightness: Minimum"
+      description: "Minimum brightness to prevent lights from turning off (percentage)"
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 50
+          unit_of_measurement: "%"
+
+    mode_1_max_brightness:
+      name: "Brightness: Maximum"
+      description: "Maximum brightness (percentage)"
+      default: 100
+      selector:
+        number:
+          min: 50
+          max: 100
+          unit_of_measurement: "%"
+
     # Mode 2: Temperature Control
     mode_2_scroll_right_entity:
       name: "Temperature: Scroll Right Entity"
@@ -213,6 +233,8 @@ action:
       brightness_increase_step: !input mode_1_increase_brightness_step
       brightness_decrease_step: !input mode_1_decrease_brightness_step
       brightness_scroll_direction: !input mode_1_scroll_right_action
+      brightness_min: !input mode_1_min_brightness
+      brightness_max: !input mode_1_max_brightness
       # Temperature variables
       temperature_target: !input mode_2_target_light
       temp_increase_step: !input mode_2_increase_temperature_step
@@ -245,12 +267,19 @@ action:
               entity_id: "{{ brightness_target }}"
             data:
               transition: "{{ transition }}"
-              brightness_step_pct: >-
-                {% if brightness_scroll_direction == 'increase' %}
-                  {{ brightness_increase_step * press_count }}
+              brightness_pct: >-
+                {% set current = state_attr(brightness_target, 'brightness') %}
+                {% if current is none %}
+                  {% set current_pct = 50 %}
                 {% else %}
-                  {{ -brightness_decrease_step * press_count }}
+                  {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}
+                {% if brightness_scroll_direction == 'increase' %}
+                  {% set new_pct = current_pct + (brightness_increase_step * press_count) %}
+                {% else %}
+                  {% set new_pct = current_pct - (brightness_decrease_step * press_count) %}
+                {% endif %}
+                {{ [[new_pct, brightness_min] | max, brightness_max] | min }}
 
       # Brightness: Scroll left
       - conditions:
@@ -262,12 +291,19 @@ action:
               entity_id: "{{ brightness_target }}"
             data:
               transition: "{{ transition }}"
-              brightness_step_pct: >-
-                {% if brightness_scroll_direction == 'increase' %}
-                  {{ -brightness_decrease_step * press_count }}
+              brightness_pct: >-
+                {% set current = state_attr(brightness_target, 'brightness') %}
+                {% if current is none %}
+                  {% set current_pct = 50 %}
                 {% else %}
-                  {{ brightness_increase_step * press_count }}
+                  {% set current_pct = (current / 255 * 100) | round(0) %}
                 {% endif %}
+                {% if brightness_scroll_direction == 'increase' %}
+                  {% set new_pct = current_pct - (brightness_decrease_step * press_count) %}
+                {% else %}
+                  {% set new_pct = current_pct + (brightness_increase_step * press_count) %}
+                {% endif %}
+                {{ [[new_pct, brightness_min] | max, brightness_max] | min }}
 
       # Temperature: Button press - Toggle on/off
       - conditions:
