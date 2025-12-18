@@ -1,51 +1,39 @@
 blueprint:
-  name: "IKEA Bilresa Scroll Wheel – Dual Mode Control"
-  description: "Control a light using the IKEA Bilresa scroll wheel. Configure both brightness and color temperature modes independently."
+  name: "IKEA Bilresa Scroll Wheel – Brightness & Temperature Control"
+  description: "Control a light using the IKEA Bilresa scroll wheel. Mode 1 controls brightness, Mode 2 controls color temperature. Use different scroll wheel positions for each mode."
   domain: automation
   input:
-    control_mode:
-      name: "Control Mode"
-      description: "Choose whether to control brightness or color temperature"
-      default: "brightness"
-      selector:
-        select:
-          options:
-            - label: "Brightness Control"
-              value: "brightness"
-            - label: "Color Temperature Control"
-              value: "temperature"
-
     # Mode 1: Brightness Control
     mode_1_scroll_right_entity:
-      name: "Mode 1: Scroll Right Entity"
-      description: "The event entity for scroll right actions (Brightness mode)"
+      name: "Brightness: Scroll Right Entity"
+      description: "The event entity for scroll right actions (Brightness control)"
       selector:
         entity:
           domain: event
 
     mode_1_scroll_left_entity:
-      name: "Mode 1: Scroll Left Entity"
-      description: "The event entity for scroll left actions (Brightness mode)"
+      name: "Brightness: Scroll Left Entity"
+      description: "The event entity for scroll left actions (Brightness control)"
       selector:
         entity:
           domain: event
 
     mode_1_button_press_entity:
-      name: "Mode 1: Button Press Entity"
-      description: "The event entity for button press actions (Brightness mode)"
+      name: "Brightness: Button Press Entity"
+      description: "The event entity for button press actions (Brightness control - toggles light)"
       selector:
         entity:
           domain: event
 
     mode_1_target_light:
-      name: "Mode 1: Target Light"
-      description: "The light to control (Brightness mode)"
+      name: "Brightness: Target Light"
+      description: "The light to control for brightness"
       selector:
         entity:
           domain: light
 
     mode_1_increase_brightness_step:
-      name: "Mode 1: Brightness Increase Step"
+      name: "Brightness: Increase Step"
       description: "How much to increase brightness per scroll (percentage)"
       default: 10
       selector:
@@ -55,7 +43,7 @@ blueprint:
           unit_of_measurement: "%"
 
     mode_1_decrease_brightness_step:
-      name: "Mode 1: Brightness Decrease Step"
+      name: "Brightness: Decrease Step"
       description: "How much to decrease brightness per scroll (percentage)"
       default: 10
       selector:
@@ -65,8 +53,8 @@ blueprint:
           unit_of_measurement: "%"
 
     mode_1_scroll_right_action:
-      name: "Mode 1: Scroll Right Action"
-      description: "What happens when scrolling right in Brightness mode"
+      name: "Brightness: Scroll Right Action"
+      description: "What happens when scrolling right for brightness"
       default: "increase"
       selector:
         select:
@@ -78,36 +66,36 @@ blueprint:
 
     # Mode 2: Temperature Control
     mode_2_scroll_right_entity:
-      name: "Mode 2: Scroll Right Entity"
-      description: "The event entity for scroll right actions (Temperature mode)"
+      name: "Temperature: Scroll Right Entity"
+      description: "The event entity for scroll right actions (Temperature control)"
       selector:
         entity:
           domain: event
 
     mode_2_scroll_left_entity:
-      name: "Mode 2: Scroll Left Entity"
-      description: "The event entity for scroll left actions (Temperature mode)"
+      name: "Temperature: Scroll Left Entity"
+      description: "The event entity for scroll left actions (Temperature control)"
       selector:
         entity:
           domain: event
 
     mode_2_button_press_entity:
-      name: "Mode 2: Button Press Entity"
-      description: "The event entity for button press actions (Temperature mode)"
+      name: "Temperature: Button Press Entity"
+      description: "The event entity for button press actions (Temperature control - toggles light)"
       selector:
         entity:
           domain: event
 
     mode_2_target_light:
-      name: "Mode 2: Target Light"
-      description: "The light to control (Temperature mode - must support color temperature)"
+      name: "Temperature: Target Light"
+      description: "The light to control for color temperature (must support color temperature)"
       selector:
         entity:
           domain: light
 
     mode_2_increase_temperature_step:
-      name: "Mode 2: Temperature Increase Step"
-      description: "How much to increase color temperature per scroll (Kelvin)"
+      name: "Temperature: Increase Step (Cooler)"
+      description: "How much to increase color temperature per scroll (Kelvin) - makes light cooler/bluer"
       default: 300
       selector:
         number:
@@ -116,8 +104,8 @@ blueprint:
           unit_of_measurement: "K"
 
     mode_2_decrease_temperature_step:
-      name: "Mode 2: Temperature Decrease Step"
-      description: "How much to decrease color temperature per scroll (Kelvin)"
+      name: "Temperature: Decrease Step (Warmer)"
+      description: "How much to decrease color temperature per scroll (Kelvin) - makes light warmer/yellower"
       default: 300
       selector:
         number:
@@ -126,8 +114,8 @@ blueprint:
           unit_of_measurement: "K"
 
     mode_2_scroll_right_action:
-      name: "Mode 2: Scroll Right Action"
-      description: "What happens when scrolling right in Temperature mode"
+      name: "Temperature: Scroll Right Action"
+      description: "What happens when scrolling right for temperature"
       default: "warmer"
       selector:
         select:
@@ -136,6 +124,26 @@ blueprint:
               value: "warmer"
             - label: "Cooler (increase Kelvin)"
               value: "cooler"
+
+    mode_2_min_kelvin:
+      name: "Temperature: Minimum Kelvin"
+      description: "Minimum color temperature (warmest)"
+      default: 2000
+      selector:
+        number:
+          min: 1500
+          max: 4000
+          unit_of_measurement: "K"
+
+    mode_2_max_kelvin:
+      name: "Temperature: Maximum Kelvin"
+      description: "Maximum color temperature (coolest)"
+      default: 6500
+      selector:
+        number:
+          min: 4000
+          max: 10000
+          unit_of_measurement: "K"
 
     # Common settings
     automation_mode:
@@ -165,144 +173,133 @@ blueprint:
           unit_of_measurement: "actions"
 
 trigger:
-  # Mode 1 triggers
+  # Brightness triggers (Mode 1)
   - platform: state
     entity_id: !input mode_1_scroll_right_entity
-    id: mode_1_scroll_right
+    id: brightness_scroll_right
   - platform: state
     entity_id: !input mode_1_scroll_left_entity
-    id: mode_1_scroll_left
+    id: brightness_scroll_left
   - platform: state
     entity_id: !input mode_1_button_press_entity
-    id: mode_1_button_press
-  # Mode 2 triggers
+    id: brightness_button_press
+  # Temperature triggers (Mode 2)
   - platform: state
     entity_id: !input mode_2_scroll_right_entity
-    id: mode_2_scroll_right
+    id: temperature_scroll_right
   - platform: state
     entity_id: !input mode_2_scroll_left_entity
-    id: mode_2_scroll_left
+    id: temperature_scroll_left
   - platform: state
     entity_id: !input mode_2_button_press_entity
-    id: mode_2_button_press
+    id: temperature_button_press
 
 action:
   - variables:
-      mode: !input control_mode
-      # Mode 1 variables
-      mode_1_target: !input mode_1_target_light
-      mode_1_brightness_increase_step: !input mode_1_increase_brightness_step
-      mode_1_brightness_decrease_step: !input mode_1_decrease_brightness_step
-      mode_1_brightness_scroll_direction: !input mode_1_scroll_right_action
-      # Mode 2 variables
-      mode_2_target: !input mode_2_target_light
-      mode_2_temp_increase_step: !input mode_2_increase_temperature_step
-      mode_2_temp_decrease_step: !input mode_2_decrease_temperature_step
-      mode_2_temp_scroll_direction: !input mode_2_scroll_right_action
+      # Brightness variables
+      brightness_target: !input mode_1_target_light
+      brightness_increase_step: !input mode_1_increase_brightness_step
+      brightness_decrease_step: !input mode_1_decrease_brightness_step
+      brightness_scroll_direction: !input mode_1_scroll_right_action
+      # Temperature variables
+      temperature_target: !input mode_2_target_light
+      temp_increase_step: !input mode_2_increase_temperature_step
+      temp_decrease_step: !input mode_2_decrease_temperature_step
+      temp_scroll_direction: !input mode_2_scroll_right_action
+      temp_min: !input mode_2_min_kelvin
+      temp_max: !input mode_2_max_kelvin
 
   - choose:
-      # Mode 1: Button press - Toggle on/off
+      # Brightness: Button press - Toggle on/off
       - conditions:
           - condition: trigger
-            id: mode_1_button_press
-          - condition: template
-            value_template: "{{ mode == 'brightness' }}"
+            id: brightness_button_press
         sequence:
           - service: light.toggle
             target:
-              entity_id: "{{ mode_1_target }}"
+              entity_id: "{{ brightness_target }}"
 
-      # Mode 1: Scroll right
+      # Brightness: Scroll right
       - conditions:
           - condition: trigger
-            id: mode_1_scroll_right
-          - condition: template
-            value_template: "{{ mode == 'brightness' }}"
+            id: brightness_scroll_right
         sequence:
           - service: light.turn_on
             target:
-              entity_id: "{{ mode_1_target }}"
+              entity_id: "{{ brightness_target }}"
             data:
               brightness_step_pct: >-
-                {% if mode_1_brightness_scroll_direction == 'increase' %}
-                  {{ mode_1_brightness_increase_step }}
+                {% if brightness_scroll_direction == 'increase' %}
+                  {{ brightness_increase_step }}
                 {% else %}
-                  {{ -mode_1_brightness_decrease_step }}
+                  {{ -brightness_decrease_step }}
                 {% endif %}
 
-      # Mode 1: Scroll left
+      # Brightness: Scroll left
       - conditions:
           - condition: trigger
-            id: mode_1_scroll_left
-          - condition: template
-            value_template: "{{ mode == 'brightness' }}"
+            id: brightness_scroll_left
         sequence:
           - service: light.turn_on
             target:
-              entity_id: "{{ mode_1_target }}"
+              entity_id: "{{ brightness_target }}"
             data:
               brightness_step_pct: >-
-                {% if mode_1_brightness_scroll_direction == 'increase' %}
-                  {{ -mode_1_brightness_decrease_step }}
+                {% if brightness_scroll_direction == 'increase' %}
+                  {{ -brightness_decrease_step }}
                 {% else %}
-                  {{ mode_1_brightness_increase_step }}
+                  {{ brightness_increase_step }}
                 {% endif %}
 
-      # Mode 2: Button press - Toggle on/off
+      # Temperature: Button press - Toggle on/off
       - conditions:
           - condition: trigger
-            id: mode_2_button_press
-          - condition: template
-            value_template: "{{ mode == 'temperature' }}"
+            id: temperature_button_press
         sequence:
           - service: light.toggle
             target:
-              entity_id: "{{ mode_2_target }}"
+              entity_id: "{{ temperature_target }}"
 
-      # Mode 2: Scroll right
+      # Temperature: Scroll right
       - conditions:
           - condition: trigger
-            id: mode_2_scroll_right
-          - condition: template
-            value_template: "{{ mode == 'temperature' }}"
+            id: temperature_scroll_right
         sequence:
           - service: light.turn_on
             target:
-              entity_id: "{{ mode_2_target }}"
+              entity_id: "{{ temperature_target }}"
             data:
-              kelvin: >-
-                {% set current = state_attr(mode_2_target, 'color_temp_kelvin') %}
+              color_temp_kelvin: >-
+                {% set current = state_attr(temperature_target, 'color_temp_kelvin') %}
                 {% if current is none %}
                   {% set current = 4000 %}
                 {% endif %}
                 {% set current = current | int(4000) %}
-                {% if mode_2_temp_scroll_direction == 'warmer' %}
-                  {{ [current - mode_2_temp_decrease_step, 2000] | max }}
+                {% if temp_scroll_direction == 'warmer' %}
+                  {{ [current - temp_decrease_step, temp_min] | max }}
                 {% else %}
-                  {{ [current + mode_2_temp_increase_step, 6500] | min }}
+                  {{ [current + temp_increase_step, temp_max] | min }}
                 {% endif %}
 
-      # Mode 2: Scroll left
+      # Temperature: Scroll left
       - conditions:
           - condition: trigger
-            id: mode_2_scroll_left
-          - condition: template
-            value_template: "{{ mode == 'temperature' }}"
+            id: temperature_scroll_left
         sequence:
           - service: light.turn_on
             target:
-              entity_id: "{{ mode_2_target }}"
+              entity_id: "{{ temperature_target }}"
             data:
-              kelvin: >-
-                {% set current = state_attr(mode_2_target, 'color_temp_kelvin') %}
+              color_temp_kelvin: >-
+                {% set current = state_attr(temperature_target, 'color_temp_kelvin') %}
                 {% if current is none %}
                   {% set current = 4000 %}
                 {% endif %}
                 {% set current = current | int(4000) %}
-                {% if mode_2_temp_scroll_direction == 'warmer' %}
-                  {{ [current + mode_2_temp_increase_step, 6500] | min }}
+                {% if temp_scroll_direction == 'warmer' %}
+                  {{ [current + temp_increase_step, temp_max] | min }}
                 {% else %}
-                  {{ [current - mode_2_temp_decrease_step, 2000] | max }}
+                  {{ [current - temp_decrease_step, temp_min] | max }}
                 {% endif %}
 
 mode: !input automation_mode
