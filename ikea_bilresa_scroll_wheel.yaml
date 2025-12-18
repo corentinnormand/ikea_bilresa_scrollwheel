@@ -145,21 +145,33 @@ blueprint:
           max: 10000
           unit_of_measurement: "K"
 
+    # Smoothing settings
+    transition_time:
+      name: "Transition Time"
+      description: "How long the light takes to transition between values (seconds). Lower = more responsive, higher = smoother."
+      default: 0.2
+      selector:
+        number:
+          min: 0
+          max: 2
+          step: 0.1
+          unit_of_measurement: "s"
+
     # Common settings
     automation_mode:
       name: "Automation Mode"
       description: "How to handle multiple triggers"
-      default: "queued"
+      default: "restart"
       selector:
         select:
           options:
-            - label: "Queued (recommended for smooth scrolling)"
+            - label: "Restart (recommended - interrupts previous action for instant response)"
+              value: "restart"
+            - label: "Queued (queue all scroll actions - can feel laggy)"
               value: "queued"
             - label: "Single (ignore new triggers while running)"
               value: "single"
-            - label: "Restart (restart on new trigger)"
-              value: "restart"
-            - label: "Parallel (run multiple instances)"
+            - label: "Parallel (run multiple instances simultaneously)"
               value: "parallel"
 
     max_queue:
@@ -208,6 +220,8 @@ action:
       temp_scroll_direction: !input mode_2_scroll_right_action
       temp_min: !input mode_2_min_kelvin
       temp_max: !input mode_2_max_kelvin
+      # Smoothing
+      transition: !input transition_time
 
   - choose:
       # Brightness: Button press - Toggle on/off
@@ -228,6 +242,7 @@ action:
             target:
               entity_id: "{{ brightness_target }}"
             data:
+              transition: "{{ transition }}"
               brightness_step_pct: >-
                 {% if brightness_scroll_direction == 'increase' %}
                   {{ brightness_increase_step }}
@@ -244,6 +259,7 @@ action:
             target:
               entity_id: "{{ brightness_target }}"
             data:
+              transition: "{{ transition }}"
               brightness_step_pct: >-
                 {% if brightness_scroll_direction == 'increase' %}
                   {{ -brightness_decrease_step }}
@@ -269,6 +285,7 @@ action:
             target:
               entity_id: "{{ temperature_target }}"
             data:
+              transition: "{{ transition }}"
               color_temp_kelvin: >-
                 {% set current = state_attr(temperature_target, 'color_temp_kelvin') %}
                 {% if current is none %}
@@ -290,6 +307,7 @@ action:
             target:
               entity_id: "{{ temperature_target }}"
             data:
+              transition: "{{ transition }}"
               color_temp_kelvin: >-
                 {% set current = state_attr(temperature_target, 'color_temp_kelvin') %}
                 {% if current is none %}
