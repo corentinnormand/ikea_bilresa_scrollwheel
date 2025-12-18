@@ -222,6 +222,8 @@ action:
       temp_max: !input mode_2_max_kelvin
       # Smoothing
       transition: !input transition_time
+      # Multiplier from scroll speed (multi_press count)
+      press_count: "{{ trigger.to_state.attributes.totalNumberOfPressesCounted | int(1) }}"
 
   - choose:
       # Brightness: Button press - Toggle on/off
@@ -245,9 +247,9 @@ action:
               transition: "{{ transition }}"
               brightness_step_pct: >-
                 {% if brightness_scroll_direction == 'increase' %}
-                  {{ brightness_increase_step }}
+                  {{ brightness_increase_step * press_count }}
                 {% else %}
-                  {{ -brightness_decrease_step }}
+                  {{ -brightness_decrease_step * press_count }}
                 {% endif %}
 
       # Brightness: Scroll left
@@ -262,9 +264,9 @@ action:
               transition: "{{ transition }}"
               brightness_step_pct: >-
                 {% if brightness_scroll_direction == 'increase' %}
-                  {{ -brightness_decrease_step }}
+                  {{ -brightness_decrease_step * press_count }}
                 {% else %}
-                  {{ brightness_increase_step }}
+                  {{ brightness_increase_step * press_count }}
                 {% endif %}
 
       # Temperature: Button press - Toggle on/off
@@ -293,9 +295,9 @@ action:
                 {% endif %}
                 {% set current = current | int(4000) %}
                 {% if temp_scroll_direction == 'warmer' %}
-                  {{ [current - temp_decrease_step, temp_min] | max }}
+                  {{ [current - (temp_decrease_step * press_count), temp_min] | max }}
                 {% else %}
-                  {{ [current + temp_increase_step, temp_max] | min }}
+                  {{ [current + (temp_increase_step * press_count), temp_max] | min }}
                 {% endif %}
 
       # Temperature: Scroll left
@@ -315,9 +317,9 @@ action:
                 {% endif %}
                 {% set current = current | int(4000) %}
                 {% if temp_scroll_direction == 'warmer' %}
-                  {{ [current + temp_increase_step, temp_max] | min }}
+                  {{ [current + (temp_increase_step * press_count), temp_max] | min }}
                 {% else %}
-                  {{ [current - temp_decrease_step, temp_min] | max }}
+                  {{ [current - (temp_decrease_step * press_count), temp_min] | max }}
                 {% endif %}
 
 mode: !input automation_mode
